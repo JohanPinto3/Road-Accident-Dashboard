@@ -132,13 +132,6 @@ elif menu == "Visuals":
                            color_discrete_sequence=['#6366f1'], template="plotly_dark")
         fig.update_layout(bargap=0.1)
 
-    elif graph_type == "Sunburst":
-        # Visualizes the hierarchy of the top states
-        top_15 = df.nlargest(15, year_col)
-        fig = px.sunburst(top_15, path=['State'], values=year_col,
-                          color=year_col, color_continuous_scale='RdBu',
-                          template="plotly_dark")
-
     # Final visual polish
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font_color="white")
     st.plotly_chart(fig, use_container_width=True)
