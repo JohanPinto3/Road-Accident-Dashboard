@@ -34,16 +34,22 @@ h1, h2, h3 {
 # ===== DATA LOADING & CLEANING =====
 @st.cache_data
 def load_data():
-    # This line MUST be indented
+    # 1. Load the file
     df = pd.read_csv('DAPL/road_accidents.csv')
-    return df
+    
+    # 2. Clean the rows
     df = df.dropna(subset=['State'])
     df = df[~df['State'].isin(['All India', 'Total', 'Total (All India)'])]
     
+    # 3. Clean the numbers (Remove commas and convert to numeric)
     cols_to_fix = ['2019 Accidents', '2020 Accidents', '2021 Accidents', '2022 Accidents', '2023 Accidents']
     for col in cols_to_fix:
         df[col] = pd.to_numeric(df[col].astype(str).str.replace(',', ''), errors='coerce')
     
+    # 4. Fill any remaining NaNs with 0 so math doesn't break
+    df = df.fillna(0)
+    
+    # NOW return the cleaned dataframe
     return df
 
 df = load_data()
