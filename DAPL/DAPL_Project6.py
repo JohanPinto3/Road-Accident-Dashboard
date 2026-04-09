@@ -59,7 +59,7 @@ menu = st.radio("", ["Home", "Data", "Visuals", "Analysis", "Insights"], horizon
 
 # ===== HOME =====
 if menu == "Home":
-    st.title("🚗 Road Accident Analysis Dashboard")
+    st.title("Road Accident Analysis Dashboard")
 
     c1, c2, c3 = st.columns(3)
     total_2023 = int(df['2023 Accidents'].sum())
@@ -83,12 +83,12 @@ if menu == "Home":
 
 # ===== DATA =====
 elif menu == "Data":
-    st.title("📂 The Dataset")
+    st.title("The Dataset")
     st.dataframe(df, use_container_width=True)
 
 # ===== VISUALS =====
 elif menu == "Visuals":
-    st.title("📊 Visual Exploration")
+    st.title("Visual Exploration")
     
     col_a, col_b = st.columns(2)
     with col_a:
@@ -124,7 +124,7 @@ elif menu == "Visuals":
         # Great for showing distribution and outliers
         fig = px.box(df, y=year_col, points="all", hover_data=['State'],
                      color_discrete_sequence=['#f87171'], template="plotly_dark")
-        st.info("💡 **Insight:** Outliers (dots far above the box) represent states with disproportionately high accident rates.")
+        st.info("**Insight:** Outliers (dots far above the box) represent states with disproportionately high accident rates.")
 
     elif graph_type == "Histogram":
         # Shows the frequency of accident counts
@@ -145,7 +145,7 @@ elif menu == "Visuals":
 
 # ===== ANALYSIS =====
 elif menu == "Analysis":
-    st.title("📉 In-Depth Statistical Breakdown")
+    st.title("In-Depth Statistical Breakdown")
     
     # ADDED ALL 5 YEARS TO THE SUMMARY
     st.subheader("1. Five-Year Summary Statistics")
@@ -177,22 +177,22 @@ elif menu == "Analysis":
 
 # ===== INSIGHTS =====
 elif menu == "Insights":
-    st.title("💡 Strategic Safety Insights")
+    st.title("Strategic Safety Insights")
     
-    st.warning("⚠️ **Major Finding: The Concentration of Risk**")
+    st.warning("**Major Finding: The Concentration of Risk**")
     st.write("""
     A visual analysis of the dataset reveals that road accidents in India are not evenly distributed. 
     Just a handful of high-volume states (such as Tamil Nadu and Madhya Pradesh) account for a massive percentage of total national accidents. 
     **Insight:** National road safety budgets should not be distributed equally; they must be hyper-focused on these specific high-risk corridors.
     """)
 
-    st.info("📉 **The Mobility Correlation (The 2020 Anomaly)**")
+    st.info("**The Mobility Correlation (The 2020 Anomaly)**")
     st.write("""
     The sharp decline in accidents during the 2020 COVID-19 lockdowns proves that accident rates are heavily tied to raw traffic volume rather than sudden improvements in road infrastructure. 
     **Insight:** As India's vehicle ownership continues to grow post-2023, accidents will inevitably rise unless structural changes are made to highway traffic management.
     """)
 
-    st.success("🎯 **Recommendations for Policymakers**")
+    st.success("**Recommendations for Policymakers**")
     st.write("""
     1. **Targeted Interventions:** Deploy advanced speed-tracking cameras and highway patrols primarily in the top 5 highest-risk states.
     2. **District-Level Data:** This state-level EDA should be expanded to district-level data to identify specific "Black Spots" (highly dangerous junctions).
