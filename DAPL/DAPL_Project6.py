@@ -92,27 +92,55 @@ elif menu == "Visuals":
     
     col_a, col_b = st.columns(2)
     with col_a:
-        graph_type = st.selectbox("Select Graph Type", ["Bar Chart", "Pie Chart", "Line Trend"])
+        graph_type = st.selectbox("Select Graph Type", 
+            ["Bar Chart", "Pie Chart", "Line Trend", "Box Plot", "Histogram", "Sunburst"])
     with col_b:
-        # ADDED 2019 AND 2020 HERE
-        year_col = st.selectbox("Select Year", ['2023 Accidents', '2022 Accidents', '2021 Accidents', '2020 Accidents', '2019 Accidents'])
+        year_col = st.selectbox("Select Year", 
+            ['2023 Accidents', '2022 Accidents', '2021 Accidents', '2020 Accidents', '2019 Accidents'])
 
     if graph_type == "Bar Chart":
-        fig = px.bar(df.nlargest(10, year_col), x='State', y=year_col, color=year_col)
+        # Shows the top 10 most dangerous states
+        fig = px.bar(df.nlargest(10, year_col), x='State', y=year_col, 
+                     color=year_col, color_continuous_scale='Reds',
+                     template="plotly_dark")
     
     elif graph_type == "Pie Chart":
-        fig = px.pie(df.nlargest(10, year_col), names='State', values=year_col)
+        # Shows market share of accidents
+        fig = px.pie(df.nlargest(10, year_col), names='State', values=year_col,
+                     hole=0.4, template="plotly_dark")
     
     elif graph_type == "Line Trend":
+        # Multi-state comparison over time
         years_list = ['2019 Accidents', '2020 Accidents', '2021 Accidents', '2022 Accidents', '2023 Accidents']
         temp_df = df.melt(id_vars='State', value_vars=years_list, var_name='Year', value_name='Count')
         temp_df['Year'] = temp_df['Year'].str.extract('(\d+)') 
         
-        selected = st.multiselect("Select States", df['State'].unique(), default=df['State'].unique()[:3])
-        fig = px.line(temp_df[temp_df['State'].isin(selected)], x='Year', y='Count', color='State', markers=True)
+        selected = st.multiselect("Select States to Compare", df['State'].unique(), default=df['State'].unique()[:3])
+        fig = px.line(temp_df[temp_df['State'].isin(selected)], x='Year', y='Count', 
+                      color='State', markers=True, template="plotly_dark")
         fig.update_xaxes(type='category')
 
-    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color="white")
+    elif graph_type == "Box Plot":
+        # Great for showing distribution and outliers
+        fig = px.box(df, y=year_col, points="all", hover_data=['State'],
+                     color_discrete_sequence=['#f87171'], template="plotly_dark")
+        st.info("💡 **Insight:** Outliers (dots far above the box) represent states with disproportionately high accident rates.")
+
+    elif graph_type == "Histogram":
+        # Shows the frequency of accident counts
+        fig = px.histogram(df, x=year_col, nbins=15, 
+                           color_discrete_sequence=['#6366f1'], template="plotly_dark")
+        fig.update_layout(bargap=0.1)
+
+    elif graph_type == "Sunburst":
+        # Visualizes the hierarchy of the top states
+        top_15 = df.nlargest(15, year_col)
+        fig = px.sunburst(top_15, path=['State'], values=year_col,
+                          color=year_col, color_continuous_scale='RdBu',
+                          template="plotly_dark")
+
+    # Final visual polish
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font_color="white")
     st.plotly_chart(fig, use_container_width=True)
 
 # ===== ANALYSIS =====
