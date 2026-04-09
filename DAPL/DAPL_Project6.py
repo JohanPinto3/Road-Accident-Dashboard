@@ -34,7 +34,8 @@ h1, h2, h3 {
 # ===== DATA LOADING & CLEANING =====
 @st.cache_data
 def load_data():
-    df = pd.read_csv('road_accidents.csv')
+   # Tell Python to look inside the DAPL folder
+df = pd.read_csv('DAPL/road_accidents.csv')
     df = df.dropna(subset=['State'])
     df = df[~df['State'].isin(['All India', 'Total', 'Total (All India)'])]
     
